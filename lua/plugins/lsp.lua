@@ -7,10 +7,10 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
-      -- local lspconfig = require("lspconfig")
-      -- local lspconfig = vim.lsp.config()
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       vim.lsp.config("clangd", {
+        capabilities = capabilities,
         cmd = {
           "clangd",
           "--background-index",
@@ -23,16 +23,13 @@ return {
         },
       })
 
+      vim.lsp.config("lua_ls", {
+        capabilities = capabilities,
+      })
 
-      vim.lsp.config("lua_ls", {})
-      vim.lsp.config("ruff", {})
-      vim.lsp.config("jdtls", {})
-      vim.lsp.enable({
-      "clangd",
-      "lua_ls",
-      "ruff",
-      "jdtls",
-    })
+      -- Java is started by ftplugin/java.lua, which gives jdtls the
+      -- project-specific workspace configuration it needs.
+      vim.lsp.enable({ "clangd", "lua_ls" })
     end
   },
   {
