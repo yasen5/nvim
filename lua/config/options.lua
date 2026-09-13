@@ -5,6 +5,7 @@ vim.cmd.colorscheme "tokyonight"
 
 vim.diagnostic.config({
   virtual_text = true,
+  severity_sort = true,
 })
 
 opt.relativenumber = true
