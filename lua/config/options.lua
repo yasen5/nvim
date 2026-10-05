@@ -47,10 +47,11 @@ if vim.env.TMUX and vim.fn.executable("tmux") == 1 then
     },
     cache_enabled = 0,
   }
--- Outside tmux, use OSC 52 when no native clipboard helper is available.
-elseif vim.fn.executable("pbcopy") == 0
+-- Use OSC 52 over SSH, or when no native clipboard helper is available.
+elseif vim.env.SSH_TTY or vim.env.SSH_CONNECTION
+    or (vim.fn.executable("pbcopy") == 0
     and vim.fn.executable("xclip") == 0
-    and vim.fn.executable("wl-copy") == 0 then
+    and vim.fn.executable("wl-copy") == 0) then
   local osc52 = require("vim.ui.clipboard.osc52")
 
   vim.g.clipboard = {
@@ -65,10 +66,3 @@ elseif vim.fn.executable("pbcopy") == 0
     },
   }
 end
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*",
-  callback = function(args)
-    require("conform").format({ bufnr = args.buf })
-  end,
-})

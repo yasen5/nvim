@@ -29,13 +29,31 @@ return {
 
       -- Java is started by ftplugin/java.lua, which gives jdtls the
       -- project-specific workspace configuration it needs.
-      vim.lsp.enable({ "clangd", "lua_ls" })
+      vim.lsp.config("ruff", {})
+      vim.lsp.config("pyright", {
+        settings = {
+          python = {
+            pythonPath = vim.fn.exepath("python3") ~= "" and vim.fn.exepath("python3") or vim.fn.exepath("python"),
+            analysis = {
+              autoSearchPaths = true,
+              useLibraryCodeForTypes = true,
+              diagnosticMode = "openFilesOnly",
+            },
+          },
+        },
+      })
+      vim.lsp.enable({
+        "clangd",
+        "lua_ls",
+        "ruff",
+        "pyright",
+      })
     end
   },
   {
     "mason-org/mason-lspconfig.nvim",
     opts = {
-      ensure_installed = { "lua_ls" },
+      ensure_installed = { "lua_ls", "clangd", "ruff", "pyright" },
     },
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },

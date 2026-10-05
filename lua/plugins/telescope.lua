@@ -1,7 +1,9 @@
 return {
   { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
+    -- 0.1.8 uses vim.treesitter.language.ft_to_lang, which was removed in
+    -- Neovim 0.12. Use the current branch for Neovim's current API.
+    'nvim-telescope/telescope.nvim', branch = 'master',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       require('telescope').setup{
